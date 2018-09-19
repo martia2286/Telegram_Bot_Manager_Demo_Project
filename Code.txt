@@ -1,0 +1,75 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Telegram.Bot;
+
+namespace AutoMatic_Telegram_Bot
+{
+    class Program
+    {
+        public static string Token = File.ReadAllText("Token.tkn");
+        public static string Name = null;
+        public static string id = null;
+        public static string caption = null;
+        //672854057:AAEeDyFycPaznO2tzETWKHiinaqN0I0nWWs
+        public static readonly TelegramBotClient bot = new TelegramBotClient(Token);
+        static void Main(string[] args)
+        {
+            bot.OnMessage += Bot_OnMessage;
+            bot.StartReceiving();
+            Console.WriteLine("Enter Caption:");
+            caption = Console.ReadLine();
+            Console.WriteLine("Bot Started.");
+            
+            while (true)
+            {
+                if (id == null)
+                {
+                    
+                }
+                else
+                {
+                    Console.WriteLine("Enter Message To Send For'"+Name+"':");
+                    bot.SendTextMessageAsync(id,caption+Console.ReadLine());
+                }
+            }
+        }
+        private static void Bot_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
+        {
+            Name = e.Message.Chat.Username.ToString();
+            id = e.Message.Chat.Id.ToString();
+            Console.WriteLine(e.Message.Chat.Username + "," + e.Message.Chat.Id + ":"+e.Message.Text);
+            switch (e.Message.Text)
+            {
+                case "/about":
+                    bot.SendTextMessageAsync(e.Message.Chat.Id, "»«  « Ê„« Ìò „«— Ì« ”«“‰œÂ:„«— Ì« ›—Êœ  ·ê—«„:09130095935 ﬁœ—  ê—› Â  Ê”ÿ »«  ›«œ— Â„Ì‰ò »«  ŒÊœ —« ”›«—‘ œÂÌœ.");
+                    break;
+                case "/start":
+                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Welcome To This Bot./about");
+                    break;
+                case "/hello":
+                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Hello!");
+                    break;
+                case "/HowAreyou":
+                    bot.SendTextMessageAsync(e.Message.Chat.Id,"Fine.Thank You.");
+                    break;
+                case "/help":
+                    bot.SendTextMessageAsync(e.Message.Chat.Id,"/start The Bot Again,/hello,/HowAreyou,/help,/info Get Your Information.");
+                    break;
+                case "/info":
+                    string id = e.Message.Chat.Id.ToString();
+                    string Username = e.Message.Chat.Username.ToString();
+                    string FirstName = e.Message.Chat.FirstName.ToString();
+                    Console.WriteLine(e.Message.Chat.Username + " Used The Bot.");
+                    bot.SendTextMessageAsync(e.Message.Chat.Id, "Your Id:'" + id + "',Your Username:'" + Username + "',Your Name:'" + FirstName + "'");
+                    break;
+                default:
+                    bot.SendTextMessageAsync(e.Message.Chat.Id,"/start The Bot Again,/hello,/HowAreyou,/help,/info Get Your Information.");
+                    break;
+            }
+        }
+    }
+}
