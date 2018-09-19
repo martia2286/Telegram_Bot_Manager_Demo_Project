@@ -1,0 +1,3 @@
+In Telegram,Goto @botfather And say /newbot Then Pick Your Bot Name And Bot Username(end with bot or _bot).
+copy the http api token and paste in the token.tkn and start program.
+Good Luck!!!
